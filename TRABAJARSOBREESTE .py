@@ -21,7 +21,9 @@ COLOR_LINEAS = (57, 149, 160) #(23, 135, 115)
 COLOR_CIRCULO = (171, 118, 176) #(255, 0, 0) #(239, 231, 200)
 COLOR_CRUZ = (120,40,140)
 BLANCO = (255, 255, 255)
-NEGRO = (0,0,0)
+NEGRO = (150,150,150)
+TICTAC = (114,112,247)
+wining= (0,0,0)
 
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("El triqui más áspero uwu")
@@ -31,9 +33,10 @@ pantalla.fill(COLOR_PANTALLA)
 tablero = np.zeros((FILAS_TABLERO, COLUMNAS_TABLERO))
 
 #fuentes
-menufont = pygame.font.SysFont("ROG Fonts", 30)
-menufont2 = pygame.font.SysFont("Comic Sans MS", 30)
-menufont3 = pygame.font.SysFont("Comic Sans MS", 20)
+menufont = pygame.font.SysFont("SHOWCARD GOTHIC", 45)
+menufont2 = pygame.font.SysFont("SHOWCARD GOTHIC", 35)
+menufont3 = pygame.font.SysFont("SHOWCARD GOTHIC", 50)
+
 #sonido
 pygame.mixer.music.load("Sonido/sound1.wav")
 pygame.mixer.music.play()
@@ -43,6 +46,20 @@ sonidocirculo = pygame.mixer.Sound("Sonido/circulo.wav")
 sonidocruz = pygame.mixer.Sound("Sonido/cruz.wav")
 
 fin_del_juego = True
+
+### TEXTO JUGADOR GANADOR###
+gano1 = menufont3.render("Ganó el jugador 1", True, wining)
+gano2 = menufont3.render("Ganó el jugador 2", True, wining)
+
+def gano_1():
+    pantalla.blit(gano1, (0, 540))
+    pygame.mixer.music.load("Sonido/gg.wav")
+    pygame.mixer.music.play()
+
+def gano_2():
+    pantalla.blit(gano2, (0, 540))
+    pygame.mixer.music.load("Sonido/gg.wav")
+    pygame.mixer.music.play()
 
 
 def dibujar_lineas():
@@ -108,36 +125,48 @@ def linea_vertical(columna, jugador):
 
     if jugador == 1:
         columna = COLOR_CIRCULO
+        pygame.draw.line(pantalla, columna, (posX, 15), (posX, ALTO - 15), 15)
+        gano_1()
     elif jugador == 2:
         columna = COLOR_CRUZ
+        pygame.draw.line(pantalla, columna, (posX, 15), (posX, ALTO - 15), 15)
+        gano_2()
 
-    pygame.draw.line(pantalla, columna, (posX, 15), (posX, ALTO - 15), 15)
 
 def linea_horizontal(fila, jugador):
     posY = fila * 200 + 100
 
     if jugador == 1:
         columna = COLOR_CIRCULO
+        pygame.draw.line(pantalla, columna, (15, posY), (ANCHO - 15, posY), 15)
+        gano_1()
     elif jugador == 2:
         columna = COLOR_CRUZ
+        pygame.draw.line(pantalla, columna, (15, posY), (ANCHO - 15, posY), 15)
+        gano_2()
 
-    pygame.draw.line(pantalla, columna, (15, posY), (ANCHO - 15, posY), 15)
 
 def diagonal_ascendente(jugador):
     if jugador == 1:
         columna = COLOR_CIRCULO
+        pygame.draw.line(pantalla, columna, (15, ALTO - 15), (ANCHO - 15, 15), 15)
+        gano_1()
     elif jugador == 2:
         columna = COLOR_CRUZ
+        pygame.draw.line(pantalla, columna, (15, ALTO - 15), (ANCHO - 15, 15), 15)
+        gano_2()
 
-    pygame.draw.line(pantalla, columna, (15, ALTO - 15), (ANCHO - 15, 15), 15)
 
 def diagonal_descendente(jugador):
     if jugador == 1:
         columna = COLOR_CIRCULO
+        pygame.draw.line(pantalla, columna, (15, 15), (ANCHO - 15, ALTO - 15), 15)
+        gano_1()
     elif jugador == 2:
         columna = COLOR_CRUZ
+        pygame.draw.line(pantalla, columna, (15, 15), (ANCHO - 15, ALTO - 15), 15)
+        gano_2()
 
-    pygame.draw.line(pantalla, columna, (15, 15), (ANCHO - 15, ALTO - 15), 15)
 
 #________________#lineas al ganar#_____________________#
 
@@ -153,22 +182,22 @@ def intromenu():
     while 1:
         image_menu = pygame.image.load("images/fondomenu.jpg")
         pantalla.blit(image_menu, (0,0))
-        tic_tac_toe = menufont.render("TIC TAC TOE", True, BLANCO)
-        pantalla.blit(tic_tac_toe, (180, 80))
+        tic_tac_toe = menufont.render("TIC TAC TOE", True, TICTAC)
+        pantalla.blit(tic_tac_toe, (170,80))
         if punto == 0:
-            jugar = menufont2.render("Jugar", True, NEGRO)
-            creditos = menufont2.render("Créditos", True, BLANCO)
-            salir = menufont2.render("Salir", True, BLANCO)
+            jugar = menufont2.render("JUGAR", True, NEGRO)
+            creditos = menufont2.render("CREDITOS", True, BLANCO)
+            salir = menufont2.render("SALIR", True, BLANCO)
         elif punto == 1:
-            jugar = menufont2.render("Jugar", True, BLANCO)
-            creditos = menufont2.render("Créditos", True, NEGRO)
-            salir = menufont2.render("Salir", True, BLANCO)
+            jugar = menufont2.render("JUGAR", True, BLANCO)
+            creditos = menufont2.render("CREDITOS", True, NEGRO)
+            salir = menufont2.render("SALIR", True, BLANCO)
         elif punto == 2:
-            jugar = menufont2.render("Jugar", True, BLANCO)
-            creditos = menufont2.render("Créditos", True, BLANCO)
-            salir = menufont2.render("Salir", True, NEGRO)
-        pantalla.blit(jugar, (250, 200))
-        pantalla.blit(creditos, (235, 300))
+            jugar = menufont2.render("JUGAR", True, BLANCO)
+            creditos = menufont2.render("CREDITOS", True, BLANCO)
+            salir = menufont2.render("SALIR", True, NEGRO)
+        pantalla.blit(jugar, (240,200))
+        pantalla.blit(creditos, (215, 300))
         pantalla.blit(salir, (250, 400))
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -251,7 +280,7 @@ while True:
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load("Sonido/music1.wav")
                 pygame.mixer.music.play(-1)
-                pygame.mixer.music.set_volume(0.5)
+                pygame.mixer.music.set_volume(0.09)
                 reiniciar()
                 jugador = 1
                 fin_del_juego = False
